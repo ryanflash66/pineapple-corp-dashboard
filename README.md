@@ -16,7 +16,7 @@ The repo combines three tracks in one place:
 
 - Live dashboard: https://pineapple-corp.vercel.app
 - Local backend app: [`RAG-Chatbot/`](./RAG-Chatbot/)
-- Public static frontend: [`vercel-dashboard/`](./vercel-dashboard/)
+- Public static frontend: [`public/`](./public/) + [`api/`](./api/)
 - Data pipeline scripts: [`helper_scripts/`](./helper_scripts/)
 
 ## Project snapshot
@@ -59,7 +59,7 @@ The goal is not "chatbot for cybersecurity." The goal is a system that can answe
 User
   |
   +--> Public demo dashboard (Vercel)
-  |       vercel-dashboard/public
+  |       public/ + api/
   |       |
   |       +--> /api/config returns CHAT_BACKEND
   |       +--> iframe loads /chat from tunneled backend when available
@@ -79,9 +79,12 @@ User
 ```text
 .
 |-- README.md
+|-- api/
+|-- public/
+|-- vercel.json
+|-- package.json
 |-- RAG-Chatbot/
 |-- helper_scripts/
-|-- vercel-dashboard/
 `-- .gitignore
 ```
 
@@ -90,8 +93,8 @@ User
 - [`RAG-Chatbot/`](./RAG-Chatbot/)  
   Main backend application. Contains the FastAPI dashboard, Chainlit app, retrieval pipeline, connectors, templates, and scripts for rebuilding the index and refreshing assets.
 
-- [`vercel-dashboard/`](./vercel-dashboard/)  
-  Static public dashboard deployed to Vercel. This is the cleanest entry point for external visitors and recruiters.
+- [`public/`](./public/) and [`api/`](./api/)  
+  Static public dashboard deployed to Vercel from the repo root. This is the cleanest entry point for external visitors and recruiters.
 
 - [`helper_scripts/`](./helper_scripts/)  
   Selected data transformation and dataset-preparation scripts used to build the incident-response corpus.
@@ -102,10 +105,10 @@ User
 
 The public dashboard is the portfolio-facing surface of the project.
 
-- Location: [`vercel-dashboard/`](./vercel-dashboard/)
+- Location: [`public/`](./public/) and [`api/`](./api/)
 - Live URL: https://pineapple-corp.vercel.app
 - Function: present a polished command center UI with asset inventory, incident widgets, and an embedded AI chat panel when a backend is available
-- Backend integration: reads `CHAT_BACKEND` from a small serverless endpoint in [`vercel-dashboard/api/config.js`](./vercel-dashboard/api/config.js)
+- Backend integration: reads `CHAT_BACKEND` from a small serverless endpoint in [`api/config.js`](./api/config.js)
 
 Important limitation: the Vercel deployment is intentionally lightweight. It does not host the model itself.
 
