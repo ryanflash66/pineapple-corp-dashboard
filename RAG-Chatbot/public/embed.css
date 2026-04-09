@@ -1,0 +1,4 @@
+/* Hide Chainlit's own header when embedded in an iframe */
+header {
+  display: none !important;
+}

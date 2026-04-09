@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pineapple Corp Command Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- ══════════════════════════════════════════════
+       LEFT SIDEBAR — Navigation
+       ══════════════════════════════════════════════ -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-badge">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <!-- leaves -->
+          <path d="M12 2 L10 6 L12 5 L14 6 Z" fill="currentColor" stroke="none"/>
+          <path d="M12 2 L9 5" /><path d="M12 2 L15 5" />
+          <path d="M10.5 4 L8 6" /><path d="M13.5 4 L16 6" />
+          <!-- body -->
+          <ellipse cx="12" cy="14" rx="5" ry="7" />
+          <!-- cross-hatch -->
+          <path d="M9 10 L15 18" opacity="0.5"/><path d="M15 10 L9 18" opacity="0.5"/>
+          <path d="M7.5 13 L16.5 13" opacity="0.5"/><path d="M7.5 16 L16.5 16" opacity="0.5"/>
+        </svg>
+      </div>
+      <span class="logo-text">Pineapple Corp</span>
+    </div>
+
+    <div class="sidebar-nav">
+      <div class="nav-section-label">Operations</div>
+      <button class="nav-item active" data-view="command-center">
+        <i data-lucide="home" class="nav-icon"></i>
+        Command Center
+      </button>
+      <button class="nav-item" data-view="assets">
+        <i data-lucide="server" class="nav-icon"></i>
+        Asset Inventory
+      </button>
+      <button class="nav-item" data-view="incidents">
+        <i data-lucide="alert-circle" class="nav-icon"></i>
+        Active Incidents
+      </button>
+      <button class="nav-item" data-view="playbooks">
+        <i data-lucide="file-text" class="nav-icon"></i>
+        Playbooks
+      </button>
+      <button class="nav-item" data-view="threat-intel">
+        <i data-lucide="crosshair" class="nav-icon"></i>
+        Threat Intel
+      </button>
+      <button class="nav-item" data-view="settings">
+        <i data-lucide="settings" class="nav-icon"></i>
+        Settings
+      </button>
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="user-profile">
+        <div class="user-avatar">
+          <i data-lucide="user"></i>
+        </div>
+        <div class="user-info">
+          <span class="user-name">Admin</span>
+          <span class="user-role">SecOps Lead</span>
+        </div>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════
+       CENTER — Header + Chat
+       ══════════════════════════════════════════════ -->
+  <div class="center">
+
+    <!-- Top Header Bar -->
+    <header class="top-header">
+      <div class="breadcrumb">
+        <button class="header-btn mobile-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">
+          <i data-lucide="menu"></i>
+        </button>
+        <span class="bc-text">Pineapple Corp</span>
+        <span class="sep bc-text">/</span>
+        <span class="current">Command Center</span>
+      </div>
+
+      <div class="header-actions">
+        <div class="search-pill">
+          <span class="search-icon"><i data-lucide="search"></i></span>
+          <input type="text" placeholder="Search assets, incidents...">
+        </div>
+
+        <button class="header-btn" id="theme-toggle" aria-label="Toggle theme">
+          <i data-lucide="sun"></i>
+        </button>
+
+        <button class="header-btn" id="refresh-btn" aria-label="Refresh dashboard">
+          <i data-lucide="rotate-ccw"></i>
+        </button>
+
+        <button class="header-btn" aria-label="Notifications">
+          <i data-lucide="bell"></i>
+          <span class="notif-dot"></span>
+        </button>
+
+        <button class="header-btn mobile-toggle" id="panel-toggle" aria-label="Toggle dashboard">
+          <i data-lucide="layout-dashboard"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- VIEW: Command Center (default) -->
+    <div class="view-section active" id="view-command-center">
+      <div class="chat-area">
+        <div class="chat-header">
+          <div class="chat-header-left">
+            <div class="bot-badge">
+              <i data-lucide="bot"></i>
+            </div>
+            <div class="chat-meta">
+              <span class="model-name">
+                Llama 3.1 8B
+                <i data-lucide="sparkles" class="sparkle"></i>
+              </span>
+              <span class="chat-status">Active Session &bull; RAG Copilot</span>
+            </div>
+          </div>
+          <span class="system-badge">
+            <span class="pulse-dot"></span>
+            System Normal
+          </span>
+        </div>
+        <!-- Chat iframe (set dynamically from ?chat= param) -->
+        <iframe src="" class="chat-iframe" id="chat-iframe" title="IR Chatbot" style="display:none"></iframe>
+        <!-- Fallback when chat backend unavailable -->
+        <div class="chat-fallback" id="chat-fallback">
+          <div class="placeholder-card">
+            <i data-lucide="wifi-off" class="placeholder-icon"></i>
+            <h3>AI Chat Offline</h3>
+            <p>The AI assistant runs on a local GPU and is not currently connected.
+               The dashboard and asset data are fully functional.</p>
+            <span class="placeholder-tag">Waiting for backend...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW: Asset Inventory -->
+    <div class="view-section" id="view-assets">
+      <div class="view-content">
+        <div class="view-title-row">
+          <h2 class="view-title">Asset Inventory</h2>
+          <span class="view-count" id="asset-count-badge">-- assets</span>
+        </div>
+        <div class="asset-table-wrap">
+          <table class="asset-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>IP / Subnet</th>
+                <th>Zone</th>
+                <th>Criticality</th>
+                <th>Vendor</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody id="asset-table-body">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW: Active Incidents (placeholder) -->
+    <div class="view-section" id="view-incidents">
+      <div class="view-content placeholder-view">
+        <div class="placeholder-card">
+          <i data-lucide="alert-circle" class="placeholder-icon"></i>
+          <h3>Active Incidents</h3>
+          <p>Connect your ticketing system (ServiceNow, Jira, PagerDuty) to see live incidents here.</p>
+          <span class="placeholder-tag">Coming Soon</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW: Playbooks (placeholder) -->
+    <div class="view-section" id="view-playbooks">
+      <div class="view-content placeholder-view">
+        <div class="placeholder-card">
+          <i data-lucide="file-text" class="placeholder-icon"></i>
+          <h3>Playbook Library</h3>
+          <p>Playbook library coming soon. Use the chatbot to generate playbooks on demand.</p>
+          <span class="placeholder-tag">Coming Soon</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW: Threat Intel (placeholder) -->
+    <div class="view-section" id="view-threat-intel">
+      <div class="view-content placeholder-view">
+        <div class="placeholder-card">
+          <i data-lucide="crosshair" class="placeholder-icon"></i>
+          <h3>Threat Intelligence</h3>
+          <p>Threat feed integration (MISP, OTX, VirusTotal) coming soon.</p>
+          <span class="placeholder-tag">Coming Soon</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW: Settings -->
+    <div class="view-section" id="view-settings">
+      <div class="view-content">
+        <h2 class="view-title">Settings</h2>
+        <div class="settings-grid">
+          <div class="settings-group">
+            <h4 class="settings-group-title"><i data-lucide="cpu" class="settings-icon"></i> Model Configuration</h4>
+            <div class="settings-table">
+              <div class="settings-row"><span class="settings-key">LoRA Adapter</span><span class="settings-val">ir_assistant_lora</span></div>
+              <div class="settings-row"><span class="settings-key">Max Sequence Length</span><span class="settings-val">2048</span></div>
+              <div class="settings-row"><span class="settings-key">Max New Tokens</span><span class="settings-val">768</span></div>
+              <div class="settings-row"><span class="settings-key">Temperature</span><span class="settings-val">0.1</span></div>
+              <div class="settings-row"><span class="settings-key">Attention Backend</span><span class="settings-val">auto</span></div>
+            </div>
+          </div>
+          <div class="settings-group">
+            <h4 class="settings-group-title"><i data-lucide="database" class="settings-icon"></i> RAG &amp; Assets</h4>
+            <div class="settings-table">
+              <div class="settings-row"><span class="settings-key">Retrieval Top-K</span><span class="settings-val">4</span></div>
+              <div class="settings-row"><span class="settings-key">Embedding Model</span><span class="settings-val">BAAI/bge-small-en-v1.5</span></div>
+              <div class="settings-row"><span class="settings-key">Asset Connector</span><span class="settings-val">mock</span></div>
+              <div class="settings-row"><span class="settings-key">Asset Count</span><span class="settings-val" id="settings-asset-count">--</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       RIGHT PANEL — Dashboard Overview
+       ══════════════════════════════════════════════ -->
+  <aside class="right-panel" id="right-panel">
+
+    <!-- Mobile close button -->
+    <div style="display:none" class="mobile-toggle" id="panel-close-row">
+      <div style="display:flex;justify-content:space-between;align-items:center;width:100%">
+        <span style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted)">Dashboard Overview</span>
+        <button class="header-btn" id="panel-close" aria-label="Close panel">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="panel-label">
+      <i data-lucide="layout-dashboard"></i>
+      <span>Command Overview</span>
+    </div>
+
+    <div class="demo-notice">
+      <i data-lucide="info" class="demo-notice-icon"></i>
+      <span>Dashboard widgets show sample data for demonstration purposes.</span>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="stat-grid">
+      <div class="stat-card green">
+        <div class="stat-top">
+          <span class="stat-label">Active Incidents</span>
+          <div class="stat-icon"><i data-lucide="activity"></i></div>
+        </div>
+        <div class="stat-bottom">
+          <span class="stat-value">12</span>
+          <span class="stat-trend">+2.5% <i data-lucide="trending-up"></i></span>
+        </div>
+      </div>
+
+      <div class="stat-card dark">
+        <div class="stat-top">
+          <span class="stat-label">MTTR</span>
+          <div class="stat-icon"><i data-lucide="clock"></i></div>
+        </div>
+        <div class="stat-bottom">
+          <span class="stat-value">4.2 hrs</span>
+          <span class="stat-trend">-15.2% <i data-lucide="trending-down"></i></span>
+        </div>
+      </div>
+
+      <div class="stat-card amber">
+        <div class="stat-top">
+          <span class="stat-label">Active Alerts</span>
+          <div class="stat-icon"><i data-lucide="alert-triangle"></i></div>
+        </div>
+        <div class="stat-bottom">
+          <span class="stat-value">8</span>
+          <span class="stat-trend">+1.4% <i data-lucide="trending-up"></i></span>
+        </div>
+      </div>
+
+      <div class="stat-card dark">
+        <div class="stat-top">
+          <span class="stat-label">Threat Level</span>
+          <div class="stat-icon"><i data-lucide="shield-alert"></i></div>
+        </div>
+        <div class="stat-bottom">
+          <span class="stat-value">Medium</span>
+          <span class="stat-trend">Stable</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-panel">
+      <div class="chart-header">
+        <div class="chart-tabs">
+          <button class="chart-tab active" data-chart="incidents">Incidents</button>
+          <button class="chart-tab" data-chart="alerts">Alerts</button>
+        </div>
+        <select class="period-select">
+          <option>Last 7 Days</option>
+          <option>Last 30 Days</option>
+          <option selected>Last 6 Months</option>
+        </select>
+      </div>
+      <div class="chart-container">
+        <canvas id="incidentChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Asset Table -->
+    <div class="asset-panel">
+      <div class="asset-panel-header">
+        <span class="asset-panel-title">Impacted Assets</span>
+        <button class="asset-more-btn" aria-label="More options">
+          <i data-lucide="more-horizontal"></i>
+        </button>
+      </div>
+      <div class="asset-list" id="impacted-asset-list">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+  </aside>
+
+</div>
+
+<!-- Mobile overlay -->
+<div class="mobile-overlay" id="mobile-overlay"></div>
+
+<!-- Scripts -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script>
+// ── Mappings (from dashboard.py) ──
+const TYPE_TO_ICON = {
+  firewall: 'shield', server: 'server', switch: 'network', router: 'router',
+  workstation: 'monitor', laptop: 'laptop', database: 'database', siem: 'eye',
+  edr: 'scan', ids: 'radar', ndr: 'activity', proxy: 'globe',
+  mfa: 'key-round', pam: 'lock', web_server: 'globe', file_server: 'hard-drive',
+  email_server: 'mail', dns: 'at-sign', backup: 'archive', dr_site: 'cloud',
+  nas: 'hard-drive', access_point: 'wifi',
+};
+
+const CRITICALITY_TO_STATUS = {
+  critical: 'Quarantined', high: 'Investigating', medium: 'Secure', low: 'Secure',
+};
+
+// ── Chat backend URL (from Vercel env var → /api/config, or ?chat= override) ──
+let CHAT_URL = new URLSearchParams(window.location.search).get('chat') || '';
+
+// ── Global state ──
+let assetsData = [];
+
+document.addEventListener('DOMContentLoaded', async () => {
+  lucide.createIcons();
+
+  // ── Load assets ──
+  try {
+    const res = await fetch('/data/assets.json');
+    const data = await res.json();
+    assetsData = data.assets || [];
+    renderAssetTable(assetsData);
+    renderImpactedAssets(assetsData.slice(0, 6));
+    document.getElementById('asset-count-badge').textContent = assetsData.length + ' assets';
+    document.getElementById('settings-asset-count').textContent = assetsData.length;
+  } catch (e) {
+    console.warn('Failed to load assets:', e);
+  }
+
+  // ── Chat iframe setup ──
+  const iframe = document.getElementById('chat-iframe');
+  const fallback = document.getElementById('chat-fallback');
+
+  // Fetch CHAT_BACKEND env var from Vercel serverless function
+  if (!CHAT_URL) {
+    try {
+      const cfg = await fetch('/api/config').then(r => r.json());
+      if (cfg.chatUrl) CHAT_URL = cfg.chatUrl;
+    } catch (e) { /* offline or local dev — stay with fallback */ }
+  }
+
+  if (CHAT_URL) {
+    iframe.src = CHAT_URL;
+    iframe.style.display = 'block';
+    fallback.style.display = 'none';
+
+    // If iframe fails to load, show fallback after timeout
+    let loaded = false;
+    iframe.addEventListener('load', () => { loaded = true; });
+    setTimeout(() => {
+      if (!loaded) {
+        iframe.style.display = 'none';
+        fallback.style.display = 'flex';
+      }
+    }, 8000);
+  }
+
+  // ── Dark mode toggle ──
+  const html = document.documentElement;
+  const themeBtn = document.getElementById('theme-toggle');
+
+  if (localStorage.getItem('theme') === 'dark') {
+    html.classList.add('dark');
+  }
+
+  function updateThemeIcon() {
+    const icon = themeBtn.querySelector('[data-lucide]');
+    if (icon) {
+      icon.setAttribute('data-lucide', html.classList.contains('dark') ? 'moon' : 'sun');
+      lucide.createIcons();
+    }
+  }
+  updateThemeIcon();
+
+  themeBtn.addEventListener('click', () => {
+    html.classList.toggle('dark');
+    const newTheme = html.classList.contains('dark') ? 'dark' : 'light';
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon();
+    if (window.dashChart) { window.dashChart.destroy(); createChart(); }
+    // Sync Chainlit iframe theme
+    if (iframe && iframe.contentWindow && CHAT_URL) {
+      iframe.contentWindow.postMessage({ type: 'theme-change', theme: newTheme }, '*');
+    }
+  });
+
+  // ── Refresh button ──
+  const refreshBtn = document.getElementById('refresh-btn');
+  refreshBtn.addEventListener('click', () => {
+    refreshBtn.classList.add('spinning');
+    setTimeout(() => {
+      refreshBtn.classList.remove('spinning');
+      location.reload();
+    }, 1000);
+  });
+
+  // ── Mobile toggles ──
+  const sidebar = document.getElementById('sidebar');
+  const rightPanel = document.getElementById('right-panel');
+  const overlay = document.getElementById('mobile-overlay');
+  const panelCloseRow = document.getElementById('panel-close-row');
+
+  function closeAll() {
+    sidebar.classList.remove('open');
+    rightPanel.classList.remove('open');
+    overlay.classList.remove('active');
+    if (panelCloseRow) panelCloseRow.style.display = 'none';
+  }
+
+  document.getElementById('sidebar-toggle')?.addEventListener('click', () => {
+    closeAll(); sidebar.classList.add('open'); overlay.classList.add('active');
+  });
+
+  document.getElementById('panel-toggle')?.addEventListener('click', () => {
+    closeAll(); rightPanel.classList.add('open'); overlay.classList.add('active');
+    if (panelCloseRow) panelCloseRow.style.display = 'block';
+  });
+
+  document.getElementById('panel-close')?.addEventListener('click', closeAll);
+  overlay.addEventListener('click', closeAll);
+
+  // ── Chart tabs ──
+  const chartTabs = document.querySelectorAll('.chart-tab');
+  chartTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      chartTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      if (window.dashChart) { window.dashChart.destroy(); createChart(tab.dataset.chart); }
+    });
+  });
+
+  // ── Chart.js area chart ──
+  const chartData = {
+    incidents: { labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul'], data: [4,7,3,8,5,12,9] },
+    alerts:    { labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul'], data: [24,14,28,22,18,32,26] },
+  };
+
+  function createChart(type = 'incidents') {
+    const ctx = document.getElementById('incidentChart').getContext('2d');
+    const isDark = html.classList.contains('dark');
+    const gridColor = isDark ? 'rgba(51,65,85,0.3)' : 'rgba(241,245,249,1)';
+    const tickColor = isDark ? '#64748b' : '#94a3b8';
+    const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+    gradient.addColorStop(0, 'rgba(16, 185, 129, 0.3)');
+    gradient.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
+    const d = chartData[type] || chartData.incidents;
+
+    window.dashChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: d.labels,
+        datasets: [{
+          data: d.data, fill: true, backgroundColor: gradient,
+          borderColor: '#10b981', borderWidth: 3, tension: 0.4,
+          pointRadius: 0, pointHoverRadius: 5,
+          pointHoverBackgroundColor: '#10b981', pointHoverBorderWidth: 0,
+        }],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: isDark ? '#1e293b' : '#ffffff',
+            titleColor: isDark ? '#94a3b8' : '#64748b',
+            bodyColor: '#10b981', bodyFont: { weight: 600 },
+            borderColor: isDark ? '#334155' : '#e2e8f0', borderWidth: 1,
+            cornerRadius: 12, padding: 10, displayColors: false,
+          },
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: tickColor, font: { size: 11, weight: 500 } }, border: { display: false } },
+          y: { grid: { color: gridColor, drawBorder: false }, ticks: { color: tickColor, font: { size: 11, weight: 500 } }, border: { display: false } },
+        },
+        interaction: { intersect: false, mode: 'index' },
+      },
+    });
+  }
+  createChart();
+
+  // ── Navigation view switching ──
+  const navItems = document.querySelectorAll('.nav-item[data-view]');
+  const viewSections = document.querySelectorAll('.view-section');
+  const breadcrumbCurrent = document.querySelector('.breadcrumb .current');
+
+  const viewLabels = {
+    'command-center': 'Command Center', 'assets': 'Asset Inventory',
+    'incidents': 'Active Incidents', 'playbooks': 'Playbooks',
+    'threat-intel': 'Threat Intel', 'settings': 'Settings',
+  };
+
+  navItems.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const view = btn.dataset.view;
+      navItems.forEach(n => n.classList.remove('active'));
+      btn.classList.add('active');
+      viewSections.forEach(v => v.classList.remove('active'));
+      const target = document.getElementById('view-' + view);
+      if (target) target.classList.add('active');
+      if (breadcrumbCurrent) breadcrumbCurrent.textContent = viewLabels[view] || view;
+      if (rightPanel) rightPanel.style.display = view === 'command-center' ? '' : 'none';
+      lucide.createIcons();
+      closeAll();
+    });
+  });
+});
+
+// ── Render helpers ──
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML;
+}
+
+function capitalize(str) {
+  return str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+}
+
+function renderAssetTable(assets) {
+  const tbody = document.getElementById('asset-table-body');
+  tbody.innerHTML = assets.map(a => `
+    <tr>
+      <td class="asset-cell-name">
+        <i data-lucide="${TYPE_TO_ICON[a.type] || 'box'}" class="asset-table-icon"></i>
+        ${escapeHtml(a.name)}
+      </td>
+      <td>${capitalize(a.type)}</td>
+      <td><code>${escapeHtml(a.ip_or_subnet)}</code></td>
+      <td>${escapeHtml(a.network_zone)}</td>
+      <td><span class="crit-badge crit-${a.criticality}">${capitalize(a.criticality)}</span></td>
+      <td>${escapeHtml(a.vendor_product)}</td>
+      <td class="asset-cell-role">${escapeHtml(a.role)}</td>
+    </tr>
+  `).join('');
+  lucide.createIcons();
+}
+
+function renderImpactedAssets(assets) {
+  const list = document.getElementById('impacted-asset-list');
+  list.innerHTML = assets.map(a => {
+    const status = CRITICALITY_TO_STATUS[a.criticality] || 'Secure';
+    return `
+    <div class="asset-row">
+      <div class="asset-row-left">
+        <div class="asset-icon-box">
+          <i data-lucide="${TYPE_TO_ICON[a.type] || 'box'}"></i>
+        </div>
+        <div class="asset-details">
+          <div class="asset-name">${escapeHtml(a.name)}</div>
+          <div class="asset-sub">${escapeHtml(a.ip_or_subnet)} &bull; ${escapeHtml(a.network_zone)}</div>
+        </div>
+      </div>
+      <div class="asset-row-right">
+        <span class="asset-type-label">${capitalize(a.type)}</span>
+        <span class="status-badge ${status.toLowerCase()}">${status}</span>
+      </div>
+    </div>`;
+  }).join('');
+  lucide.createIcons();
+}
+</script>
+
+</body>
+</html>

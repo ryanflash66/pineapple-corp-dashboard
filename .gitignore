@@ -1,0 +1,74 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+*.code-workspace
+
+# Logs / temp files
+*.log
+*.tmp
+*.temp
+*.swp
+*~
+
+# Local environment / secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+.python-version
+
+# Python caches / virtualenvs
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# Node / frontend build output
+node_modules/
+.next/
+dist/
+build/
+coverage/
+.vercel/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local agent / AI tooling state
+.chainlit/
+chainlit.md
+.claude/
+.files/
+.aider*
+.cursor/
+.roo/
+.continue/
+.copilot/
+.windsurf/
+.opencode/
+.augment/
+.codex/
+
+# Project-generated outputs / ML artifacts
+outputs/
+irp_exports/
+unsloth_compiled_cache/
+RAG-Chatbot/storage/
+chroma_db/
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+
+# Local archives / exports
+Design IRP Command Center Dashboard.zip
