@@ -164,7 +164,6 @@ The refresh path is implemented in [`RAG-Chatbot/scripts/refresh_assets.py`](./R
 The repo also includes the work behind the model behavior:
 
 - training notebook: [`IRP_agent_trainint.ipynb`](./IRP_agent_trainint.ipynb)
-- retraining strategy: [`retraining_plan.md`](./retraining_plan.md)
 - project background: [`Project Overview.md`](./Project%20Overview.md)
 - demo/deployment flow: [`DEMO_DAY.md`](./DEMO_DAY.md)
 
@@ -282,7 +281,7 @@ That is the main design goal of the project.
 - The training datasets in [`datasets/`](./datasets/) include multiple iterations of the IR playbook corpus.
 - The repo does **not** include large model artifacts or adapter exports in version control.
 - Local exports such as LoRA adapters and other generated artifacts are intentionally ignored by Git.
-- The retraining plan in [`retraining_plan.md`](./retraining_plan.md) outlines the move toward a larger hybrid dataset with stronger asset-aware behavior.
+- The dataset and helper-script directories reflect an iterative retraining workflow for improving asset-aware playbook behavior.
 
 ## Current limitations
 
