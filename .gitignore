@@ -62,6 +62,7 @@ chainlit.md
 # Project-generated outputs / ML artifacts
 outputs/
 irp_exports/
+poster_images/
 unsloth_compiled_cache/
 RAG-Chatbot/storage/
 chroma_db/
