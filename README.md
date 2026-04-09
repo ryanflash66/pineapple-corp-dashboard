@@ -6,7 +6,7 @@ The repo combines three tracks in one place:
 
 - a public-facing command center dashboard for demonstrations,
 - a local RAG + LoRA backend that generates IR playbooks,
-- and the research/training assets used to build and iterate on the system.
+- and selected data-preparation scripts that support the training workflow.
 
 > [!IMPORTANT]
 > The public dashboard is live at **https://pineapple-corp.vercel.app**.  
@@ -17,8 +17,7 @@ The repo combines three tracks in one place:
 - Live dashboard: https://pineapple-corp.vercel.app
 - Local backend app: [`RAG-Chatbot/`](./RAG-Chatbot/)
 - Public static frontend: [`vercel-dashboard/`](./vercel-dashboard/)
-- Demo runbook: [`DEMO_DAY.md`](./DEMO_DAY.md)
-- Project background: [`Project Overview.md`](./Project%20Overview.md)
+- Data pipeline scripts: [`helper_scripts/`](./helper_scripts/)
 
 ## Project snapshot
 
@@ -52,7 +51,7 @@ The goal is not "chatbot for cybersecurity." The goal is a system that can answe
 - Enriches responses with asset inventory context so output can reference hostnames, IPs, network zones, and security controls.
 - Exposes the backend through a local FastAPI dashboard and embedded Chainlit chat interface.
 - Ships a separate static Vercel dashboard for public demos and portfolio visibility.
-- Includes dataset preparation, retraining notes, evaluation visuals, and prototype UI work in the same repo.
+- Includes the application code plus selected scripts used to support the retraining pipeline.
 
 ## Architecture
 
@@ -80,15 +79,10 @@ User
 ```text
 .
 |-- README.md
-|-- DEMO_DAY.md
-|-- Project Overview.md
-|-- IRP_agent_trainint.ipynb
-|-- datasets/
-|-- helper_scripts/
-|-- poster_images/
 |-- RAG-Chatbot/
+|-- helper_scripts/
 |-- vercel-dashboard/
-`-- Design IRP Command Center Dashboard/
+`-- .gitignore
 ```
 
 ### Key directories
@@ -99,17 +93,8 @@ User
 - [`vercel-dashboard/`](./vercel-dashboard/)  
   Static public dashboard deployed to Vercel. This is the cleanest entry point for external visitors and recruiters.
 
-- [`Design IRP Command Center Dashboard/`](./Design%20IRP%20Command%20Center%20Dashboard/)  
-  Figma-derived Vite prototype. This is more exploratory than the deployed static dashboard.
-
-- [`datasets/`](./datasets/)  
-  Training data variants, including original, deduplicated, and hybrid asset-aware datasets.
-
 - [`helper_scripts/`](./helper_scripts/)  
-  Data preparation and validation scripts for transforming incident-response examples into training-ready JSONL.
-
-- [`poster_images/`](./poster_images/)  
-  Presentation and research visuals used for poster/demo material.
+  Selected data transformation and dataset-preparation scripts used to build the incident-response corpus.
 
 ## Main components
 
@@ -159,15 +144,15 @@ The refresh path is implemented in [`RAG-Chatbot/scripts/refresh_assets.py`](./R
 - `mock`
 - `nmap`
 
-### 4. Training and research assets
+### 4. Training and research support
 
-The repo also includes the work behind the model behavior:
+The repo still includes selected implementation artifacts behind the model behavior:
 
-- training notebook: [`IRP_agent_trainint.ipynb`](./IRP_agent_trainint.ipynb)
-- project background: [`Project Overview.md`](./Project%20Overview.md)
-- demo/deployment flow: [`DEMO_DAY.md`](./DEMO_DAY.md)
+- transformation scripts for converting, deduplicating, merging, and enriching IR examples,
+- asset profiles used to make outputs more organization-aware,
+- and mapping data used to support synthetic data generation experiments.
 
-This part of the repo is intentionally visible because the project is both an engineering prototype and a research artifact.
+Raw datasets, private working notes, bulky notebooks, and presentation assets are intentionally left out of the public repo.
 
 ## Quick start
 
@@ -248,8 +233,6 @@ CHAT_BACKEND=https://your-tunnel-url.trycloudflare.com/chat
 
 Redeploy the Vercel project, then the public dashboard will embed your live local assistant.
 
-The full step-by-step flow is documented in [`DEMO_DAY.md`](./DEMO_DAY.md).
-
 ## How retrieval and grounding work
 
 The backend uses a mix of document retrieval and structured asset grounding.
@@ -278,10 +261,18 @@ That is the main design goal of the project.
 
 ## Data and model notes
 
-- The training datasets in [`datasets/`](./datasets/) include multiple iterations of the IR playbook corpus.
+- The public repo keeps the application code and selected data-prep scripts, but omits raw datasets and large training notebooks.
 - The repo does **not** include large model artifacts or adapter exports in version control.
 - Local exports such as LoRA adapters and other generated artifacts are intentionally ignored by Git.
-- The dataset and helper-script directories reflect an iterative retraining workflow for improving asset-aware playbook behavior.
+- The remaining helper scripts reflect an iterative retraining workflow for improving asset-aware playbook behavior.
+
+## What is intentionally omitted from the public repo
+
+- Raw training datasets and intermediate JSONL variants
+- Local research notebooks and Colab working files
+- Internal runbooks and private working notes
+- Presentation images, QR assets, and other demo collateral
+- Local exports, vector stores, adapter weights, and generated caches
 
 ## Current limitations
 
@@ -289,7 +280,7 @@ That is the main design goal of the project.
 - Default asset data is realistic but synthetic unless you switch to a live connector.
 - This is not production-hardened SOAR infrastructure.
 - Authentication, authorization, audit boundaries, and enterprise controls are incomplete.
-- The repo contains research and prototype code alongside demo-ready code because this project is still actively evolving.
+- The public repo is curated for visitors, while broader research and working materials remain local-only.
 
 ## Roadmap
 
@@ -301,10 +292,7 @@ That is the main design goal of the project.
 
 ## Supporting material
 
-- [`Project Overview.md`](./Project%20Overview.md)
-- [`DEMO_DAY.md`](./DEMO_DAY.md)
 - [`RAG-Chatbot/README.md`](./RAG-Chatbot/README.md)
-- [`Design IRP Command Center Dashboard/README.md`](./Design%20IRP%20Command%20Center%20Dashboard/README.md)
 
 ## Author
 

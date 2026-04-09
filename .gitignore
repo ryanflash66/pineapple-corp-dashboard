@@ -74,3 +74,17 @@ chroma_db/
 # Local archives / exports
 Design IRP Command Center Dashboard.zip
 retraining_plan.md
+
+# Local research / working materials not kept in the public repo
+CHANGELOG-2026-03-15-synthetic-dataset-removal.md
+DEMO_DAY.md
+Project Overview.md
+IRP_agent_trainint.ipynb
+datasets/
+Design IRP Command Center Dashboard/
+helper_scripts/Synthetic_Data_Llama3_3_70B.ipynb
+helper_scripts/_rebuild_notebook.py
+helper_scripts/validate_colab_outputs.py
+netbox_ai_dataset.json
+netbox_devices.csv
+pineapple-corp-qr.png
